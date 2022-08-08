@@ -2,10 +2,16 @@ const express = require("express");
 const router = express.Router();
 
 const {
+    createLocation,
     listChangwat,
     listAmphoe,
     listTambon,
 } = require("../controllers/location");
+
+//@endpoint     localhost:4000/api/location
+//@method       POST
+//@access       Public
+router.post("/location", createLocation);
 
 //@endpoint     localhost:4000/api/changwat
 //@method       GET

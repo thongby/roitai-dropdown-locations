@@ -2,7 +2,19 @@ const Changwat = require('../models/locations/changwat');
 const Amphoe = require('../models/locations/amphoe');
 const Tambon = require('../models/locations/tambon');
 
+const Location = require('../models/locations/location')
+
 // Location data ------------------------------------
+exports.createLocation = async (req, res) => {
+    try {
+        const dataLocation = await new Location(req.body).save();
+        res.send(dataLocation)
+    } catch (error) {
+        console.log(error)
+        res.status(400).send('Server Error!!!')
+    }
+}
+
 // List all changwat data
 exports.listChangwat = async (req, res) => {
     try {

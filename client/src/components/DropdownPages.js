@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-import { listProvince, listAmphoe, listTambon } from "../functions/locations";
+import {
+  createLocation,
+  listProvince,
+  listAmphoe,
+  listTambon,
+} from "../functions/locations";
 
 const DropdownPages = () => {
   const [province, setProvince] = useState([]);
@@ -19,6 +24,17 @@ const DropdownPages = () => {
     loadData();
   }, []);
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    createLocation(data)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const loadData = () => {
     listProvince()
       .then((res) => {
@@ -30,13 +46,13 @@ const DropdownPages = () => {
   };
 
   const onChangeData = (e) => {
-    setData({ ...data,[e.target.name]:e.target.value})
-  }
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
 
   const onChangeProvince = (e) => {
     let index = e.nativeEvent.target.selectedIndex;
     let label = e.nativeEvent.target[index].text;
-    setData({...data,[e.target.name]:label});
+    setData({ ...data, [e.target.name]: label });
 
     listAmphoe(e.target.value)
       .then((res) => {
@@ -50,7 +66,7 @@ const DropdownPages = () => {
   const onChangeAmphoe = (e) => {
     let index = e.nativeEvent.target.selectedIndex;
     let label = e.nativeEvent.target[index].text;
-    setData({...data,[e.target.name]:label});
+    setData({ ...data, [e.target.name]: label });
 
     listTambon(e.target.value)
       .then((res) => {
@@ -64,7 +80,7 @@ const DropdownPages = () => {
   const onChangeTambon = (e) => {
     let index = e.nativeEvent.target.selectedIndex;
     let label = e.nativeEvent.target[index].text;
-    setData({...data,[e.target.name]:label});
+    setData({ ...data, [e.target.name]: label });
   };
 
   console.log(data);
@@ -72,9 +88,9 @@ const DropdownPages = () => {
   return (
     <>
       <h1>DropdownPages</h1>
-      <form>
-        <input type="text" name="title" onChange={(e)=>onChangeData(e)} />
-        <input type="text" name="address" onChange={(e)=>onChangeData(e)}/>
+      <form onSubmit={onSubmit}>
+        <input type="text" name="title" onChange={(e) => onChangeData(e)} />
+        <input type="text" name="address" onChange={(e) => onChangeData(e)} />
         <select name="province" onChange={(e) => onChangeProvince(e)}>
           {province.map((item, index) => (
             <option key={index} value={item.ch_id}>
@@ -98,6 +114,7 @@ const DropdownPages = () => {
             </option>
           ))}
         </select>
+        <button>Submit</button>
       </form>
     </>
   );
